@@ -1,18 +1,27 @@
-<h2>🕒 Recent Matches</h2>
+<link rel="stylesheet" href="styles/upcoming.css">
 
-<ul style="margin-top:12px">
-  <li>
-    <b>India vs New Zealand</b><br>
-    India won by 6 wickets
-  </li>
-  <br>
-  <li>
-    <b>Pakistan vs Sri Lanka</b><br>
-    Sri Lanka won by 4 runs
-  </li>
-  <br>
-  <li>
-    <b>Australia vs England</b><br>
-    Match tied
-  </li>
-</ul>
+<h2>🕒 Recent Matches</h2>
+<div id="recyclerView"></div>
+
+<script type="module">
+  import { getMatches } from "../api/upcomingApi.js";
+  import { RecentAdapter } from "../adapters/recentAdapter.js";
+
+  async function loadData() {
+    const rv = document.getElementById("recyclerView");
+    if (!rv) return;
+
+    rv.innerHTML = "Loading...";
+
+    try {
+      const data = await getMatches();
+      rv.innerHTML = RecentAdapter(data.completedFixtures);
+    } catch (e) {
+      console.error(e);
+      rv.innerHTML = "Failed to load";
+    }
+  }
+
+  // same trick you used for livestreaming
+  requestAnimationFrame(loadData);
+</script>

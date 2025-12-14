@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Match Details</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #1a1a1a; color: white; padding: 20px; }
+    .card { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 12px; }
+    .title { font-weight: bold; font-size: 18px; margin-bottom: 10px; }
+    .row { margin-bottom: 8px; }
+    .label { font-weight: bold; }
+    pre { background: #222; padding: 10px; border-radius: 8px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+
+<h1>Match Details</h1>
+
+<div class="card">
+  <div class="title">Clicked Match</div>
+  <div class="row"><span class="label">Position:</span> <span id="position"></span></div>
+  <div class="row"><span class="label">Match Data:</span>
+    <pre id="matchData"></pre>
+  </div>
+</div>
+
+<div class="card">
+  <div class="title">Full Matches List</div>
+  <pre id="fullList"></pre>
+</div>
+
+<script>
+  // Read bundle (like getIntent().getExtras())
+  const bundleStr = sessionStorage.getItem("MATCH_BUNDLE");
+
+  if (!bundleStr) {
+    document.body.innerHTML = "No match data found";
+    throw new Error("Bundle missing");
+  }
+
+  const bundle = JSON.parse(bundleStr);
+
+  const match = bundle.MATCHDATA;
+  const position = bundle.POSITION;
+  const list = bundle.MATCHDETAILS;
+
+  // TEMP: show raw data so you understand structure
+  document.body.innerHTML = `
+    <h2>POSITION: ${position}</h2>
+    <pre>${JSON.stringify(match, null, 2)}</pre>
+  `;
+</script>
+
+
+</body>
+</html>

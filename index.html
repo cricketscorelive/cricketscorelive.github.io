@@ -145,56 +145,112 @@
 <script type="module">
   import { getLiveStreams } from "./api/livestreamingApi.js";
   import { LiveStreamingAdapter } from "./adapters/livestreamingAdapter.js";
+  import { getMatches } from "./api/upcomingApi.js";
+  import { UpcomingAdapter } from "./adapters/upcomingAdapter.js";
+  import { RecentAdapter } from "./adapters/recentAdapter.js";
+  import { LiveAdapter } from "./adapters/liveAdapter.js";
 
   const frameLayout = document.getElementById("frameLayout");
   const tabs = document.querySelectorAll(".tab");
 
   async function loadFragment(name) {
-    try {
-      const res = await fetch(`fragments/${name}.html`);
-      frameLayout.innerHTML = await res.text();
+    const res = await fetch(`fragments/${name}.html`);
+    frameLayout.innerHTML = await res.text();
 
-      if (name === "livestreaming") {
-        loadLiveStreaming();
-      }
-    } catch {
-      frameLayout.innerHTML = "<p>Fragment not found</p>";
-    }
+    requestAnimationFrame(() => {
+      if (name === "livestreaming") loadLiveStreaming();
+      if (name === "upcoming") loadUpcoming();
+      if (name === "recent") loadRecent();
+      if (name === "live") loadLive();
+    });
   }
 
   function openFragment(name) {
     tabs.forEach(t => t.classList.remove("active"));
-    document.querySelector(`.tab[data-fragment="${name}"]`)?.classList.add("active");
-
-    window.location.hash = name;
+    document.querySelector(`[data-fragment="${name}"]`).classList.add("active");
+    location.hash = name;
     loadFragment(name);
   }
 
-  tabs.forEach(tab => {
-    tab.addEventListener("click", () => openFragment(tab.dataset.fragment));
+  tabs.forEach(t => t.onclick = () => openFragment(t.dataset.fragment));
+
+  window.addEventListener("hashchange", () => {
+    openFragment(location.hash.replace("#","") || "home");
   });
 
-  function handleHash() {
-    const fragment = window.location.hash.replace("#", "") || "home";
-    openFragment(fragment);
-  }
-
-  window.addEventListener("hashchange", handleHash);
-  handleHash();
+  openFragment(location.hash.replace("#","") || "home");
 
   async function loadLiveStreaming() {
-    const recyclerView = document.getElementById("recyclerView");
-    if (!recyclerView) return;
+    const rv = document.getElementById("recyclerView");
+    if (!rv) return;
+      rv.innerHTML = "Loading...";
+      const data = await getLiveStreams();
+      rv.innerHTML = LiveStreamingAdapter(data);
+    }
 
-    recyclerView.innerHTML = "Loading...";
+  async function loadUpcoming() {
+    const rv = document.getElementById("recyclerView");
+    if (!rv) return;
+
+    rv.innerHTML = "Loading...";
 
     try {
-      const data = await getLiveStreams();
-      recyclerView.innerHTML = LiveStreamingAdapter(data);
-    } catch {
-      recyclerView.innerHTML = "Failed to load live streams";
+      const data = await getMatches();
+
+      const list = Array.isArray(data)
+        ? data
+        : data.UpcomingFixtures || [];
+
+      rv.innerHTML = UpcomingAdapter(list);
+    } catch (e) {
+      console.error("Upcoming error:", e);
+      rv.innerHTML = "Failed to load upcoming matches";
     }
   }
+
+  async function loadLive() {
+    const rv = document.getElementById("recyclerView");
+    if (!rv) return;
+
+    rv.innerHTML = "Loading...";
+
+    try {
+      const data = await getMatches();
+
+      const list = Array.isArray(data)
+        ? data
+        : data.InProgressFixtures || [];
+
+      rv.innerHTML = LiveAdapter(list);
+    } catch (e) {
+      console.error("Live error:", e);
+      rv.innerHTML = "Failed to load Live matches";
+    }
+  }
+
+    async function loadRecent() {
+    const rv = document.getElementById("recyclerView");
+    if (!rv) return;
+
+    rv.innerHTML = "Loading...";
+
+    try {
+      const data = await getMatches();
+
+      const list = Array.isArray(data)
+        ? data
+        : data.CompletedFixtures || [];
+
+      rv.innerHTML = RecentAdapter(list);
+    } catch (e) {
+      console.error("Recent error:", e);
+      rv.innerHTML = "Failed to load Completed matches";
+    }
+  }
+
+
+
+  
 </script>
 
 </body>

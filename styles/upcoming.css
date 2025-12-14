@@ -1,0 +1,222 @@
+/* ===== COLORS ===== */
+:root {
+  --primary: #024334;
+  --primaryLow: #036A50;
+  --white: #ffffff;
+  --black: #000000;
+  --gray: #b3b3b3;
+  --red: #ff0000;
+}
+
+/* ===== RecyclerView / Grid Container ===== */
+#recyclerView {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile default */
+  gap: 12px;
+  padding: 5px;
+}
+
+/* ===== Tablet (2 cards) ===== */
+@media (min-width: 600px) {
+  #recyclerView {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== Small Desktop (3 cards) ===== */
+@media (min-width: 900px) {
+  #recyclerView {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ===== Large Desktop (5 cards) ===== */
+@media (min-width: 1200px) {
+  #recyclerView {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* ===== CardView ===== */
+.cardview {
+  background: var(--gray);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Hover effect for devices with hover */
+@media (hover: hover) {
+  .cardview:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* ===== Inner Card (bg_card.xml) ===== */
+.card-inner {
+  background: var(--primary);
+  border: 2px solid var(--white);
+  border-radius: 12px;
+  padding: 2px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+/* ===== Completed Badge ===== */
+.txtCompleted {
+  margin: 5px;
+  padding: 5px 10px;
+  background: var(--primaryLow);
+  border-radius: 10px;
+  color: var(--white);
+  font-size: 12px;
+  font-weight: bold;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Series Row ===== */
+.series-row {
+  height: 45px;
+  background: #f5eaea;
+  display: flex;
+  flex-direction: row;
+}
+
+.series-name {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: var(--black);
+}
+
+.arrow {
+  width: 35px;
+  height: 35px;
+  margin: auto 5px;
+  background: url("../img/ic_arrow_right.png") center no-repeat;
+  background-size: contain;
+}
+
+/* ===== Venue Relative Layout ===== */
+.venue-rel {
+  position: relative;
+  margin: 7px;
+  height: 30px;
+}
+
+.pill {
+  position: absolute;
+  height: 30px;
+  padding: 0 10px;
+  background: var(--primaryLow);
+  border-radius: 10px;
+  color: var(--white);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.venue-type {
+  left: 0;
+  font-weight: bold;
+}
+
+.venue-name {
+  right: 0;
+}
+
+/* ===== Teams Rows ===== */
+.team-row {
+  display: flex;
+  padding: 5px 15px;
+}
+
+.team-left {
+  flex: 0.5;
+  display: flex;
+  align-items: center;
+}
+
+.team-left img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.team-left span {
+  padding: 5px;
+  color: var(--white);
+}
+
+.team-score {
+  flex: 0.5;
+  color: var(--white);
+  display: flex;
+  gap: 5px;
+}
+
+/* ===== Match Result ===== */
+.match-result {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ===== Live Badge ===== */
+.live {
+  color: #ff3b3b;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* ===== Watch Button ===== */
+.watch {
+  background: #0a1a44;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* ===== Teams VS Layout ===== */
+.teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.team {
+  text-align: center;
+  flex: 1;
+}
+
+.team img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.team span {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.vs {
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0 6px;
+}

@@ -1,15 +1,27 @@
+<link rel="stylesheet" href="styles/upcoming.css">
+
 <h2>🔴 Live Matches</h2>
+<div id="recyclerView"></div>
 
-<div style="margin-top:12px">
-  <div style="padding:10px; border:1px solid #ddd; margin-bottom:10px">
-    <b>India vs Australia</b><br>
-    India: 156/4 (18.3 ov)<br>
-    Status: <span style="color:red">LIVE</span>
-  </div>
+<script type="module">
+  import { getMatches } from "../api/upcomingApi.js";
+  import { LiveAdapter } from "../adapters/liveAdapter.js";
 
-  <div style="padding:10px; border:1px solid #ddd">
-    <b>England vs South Africa</b><br>
-    England: 210/6 (45 ov)<br>
-    Status: <span style="color:red">LIVE</span>
-  </div>
-</div>
+  async function loadData() {
+    const rv = document.getElementById("recyclerView");
+    if (!rv) return;
+
+    rv.innerHTML = "Loading...";
+
+    try {
+      const data = await getMatches();
+      rv.innerHTML = LiveAdapter(data.inProgressFixtures);
+    } catch (e) {
+      console.error(e);
+      rv.innerHTML = "Failed to load";
+    }
+  }
+
+  // same trick you used for livestreaming
+  requestAnimationFrame(loadData);
+</script>

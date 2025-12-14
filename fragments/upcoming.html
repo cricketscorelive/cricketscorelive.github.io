@@ -1,21 +1,27 @@
+<link rel="stylesheet" href="styles/upcoming.css">
+
 <h2>📅 Upcoming Matches</h2>
+<div id="recyclerView"></div>
 
-<div style="margin-top:12px">
-  <div style="padding:10px; border:1px solid #ddd; margin-bottom:10px">
-    <b>India vs Pakistan</b><br>
-    Date: Tomorrow<br>
-    Time: 7:30 PM IST
-  </div>
+<script type="module">
+  import { getMatches } from "../api/upcomingApi.js";
+  import { UpcomingAdapter } from "../adapters/upcomingAdapter.js";
 
-  <div style="padding:10px; border:1px solid #ddd; margin-bottom:10px">
-    <b>Australia vs England</b><br>
-    Date: 18 Feb 2025<br>
-    Time: 3:30 PM IST
-  </div>
+  async function loadData() {
+    const rv = document.getElementById("recyclerView");
+    if (!rv) return;
 
-  <div style="padding:10px; border:1px solid #ddd">
-    <b>South Africa vs New Zealand</b><br>
-    Date: 20 Feb 2025<br>
-    Time: 1:30 PM IST
-  </div>
-</div>
+    rv.innerHTML = "Loading...";
+
+    try {
+      const data = await getMatches();
+      rv.innerHTML = UpcomingAdapter(data.upcomingFixtures);
+    } catch (e) {
+      console.error(e);
+      rv.innerHTML = "Failed to load";
+    }
+  }
+
+  // same trick you used for livestreaming
+  requestAnimationFrame(loadData);
+</script>
