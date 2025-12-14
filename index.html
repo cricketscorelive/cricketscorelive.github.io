@@ -149,6 +149,9 @@
   import { UpcomingAdapter } from "./adapters/upcomingAdapter.js";
   import { RecentAdapter } from "./adapters/recentAdapter.js";
   import { LiveAdapter } from "./adapters/liveAdapter.js";
+  import { getArticles } from "./api/articlesApi.js";
+  import { HomeArticleAdapter } from "./adapters/homeArticleAdapter.js";
+
 
   const frameLayout = document.getElementById("frameLayout");
   const tabs = document.querySelectorAll(".tab");
@@ -158,6 +161,7 @@
     frameLayout.innerHTML = await res.text();
 
     requestAnimationFrame(() => {
+      if (name === "home") loadHome();
       if (name === "livestreaming") loadLiveStreaming();
       if (name === "upcoming") loadUpcoming();
       if (name === "recent") loadRecent();
@@ -228,7 +232,7 @@
     }
   }
 
-    async function loadRecent() {
+  async function loadRecent() {
     const rv = document.getElementById("recyclerView");
     if (!rv) return;
 
@@ -248,7 +252,21 @@
     }
   }
 
+  async function loadHome() {
+    const rv = document.getElementById("recyclerView");
+    if (!rv) return;
 
+    rv.innerHTML = "Loading...";
+
+    try {
+      const data = await getArticles();
+      console.log("Articles:", await getArticles());
+      rv.innerHTML = HomeArticleAdapter(data);
+    } catch (e) {
+      console.error("Articles error:", e);
+      rv.innerHTML = "Failed to load articles";
+    }
+  }
 
   
 </script>

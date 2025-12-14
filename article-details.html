@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article Details | Microbuzz Tech</title>
+  <link rel="stylesheet" href="css/articles.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+      color: #000;
+      line-height: 1.6;
+    }
+
+    header, footer {
+      background: #0a1a44;
+      color: #fff;
+      text-align: center;
+      padding: 14px;
+    }
+
+    .article-container {
+      max-width: 900px;
+      margin: 16px auto;
+      padding: 0 16px;
+    }
+
+    .article-banner {
+      width: 100%;
+      height: auto;
+      max-height: 500px;
+      object-fit: cover;
+      border-radius: 0;
+      margin-bottom: 16px;
+    }
+
+    .article-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .article-meta {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    .article-meta a {
+      color: #1fa84f;
+      text-decoration: underline;
+    }
+
+    .article-description {
+      font-size: 16px;
+      white-space: pre-wrap; /* Preserve line breaks */
+    }
+
+    @media (max-width: 600px) {
+      .article-title {
+        font-size: 20px;
+      }
+
+      .article-description {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header"></div>
+
+  <div class="article-container" id="articleContainer">
+    Loading...
+  </div>
+
+  <div id="footer"></div>
+
+  <script>
+    async function load(file, element) {
+      const html = await fetch(file).then(res => res.text());
+      document.getElementById(element).innerHTML = html;
+    }
+
+    load("header.html", "header");
+    load("footer.html", "footer");
+  </script>
+
+  <script>
+    // Read article bundle from sessionStorage
+    const bundle = JSON.parse(sessionStorage.getItem('ARTICLE_BUNDLE'));
+    const container = document.getElementById('articleContainer');
+
+    if (!bundle || !bundle.ARTICLE) {
+      container.innerHTML = "<p>Article not found.</p>";
+    } else {
+      const article = bundle.ARTICLE;
+
+      container.innerHTML = `
+        <img class="article-banner" src="${article.banner}" alt="Article Banner">
+        <div class="article-title">${article.title}</div>
+        <div class="article-meta">
+          By <a href="${article.authorLink}" target="_blank">${article.author}</a> | ${article.time}
+        </div>
+        <div class="article-description">${article.description}</div>
+      `;
+    }
+  </script>
+</body>
+</html>

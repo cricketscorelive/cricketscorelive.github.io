@@ -1,0 +1,33 @@
+/* ===== HOME ARTICLE CARD (Android parity) ===== */
+
+.article-card {
+  display: flex;
+  align-items: center;
+
+  margin: 6px;
+  padding: 6px;
+
+  background: #024334;              /* primaryColor */
+  border: 2px solid #ffffff;        /* white stroke */
+  border-radius: 12px;
+
+  cursor: pointer;
+}
+
+.article-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;                /* fitXY */
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.article-text {
+  margin-left: 10px;
+
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+
+  line-height: 1.3;
+}
