@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Cricket TV HD Score | Fast Live Cricket Live Line, Ball-by-Ball Score, IPL, PSL | Microbuzz Tech</title>
+  <title>Cricscore | Fast Live Cricket Live Line, Ball-by-Ball Score, IPL, PSL | Microbuzz Tech</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.ico">
 
   <!-- SEO META DESCRIPTION -->
@@ -30,11 +30,23 @@
     "name": "Microbuzz Tech",
     "url": "https://cricketscorelive.github.io/",
     "logo": "https://cricketscorelive.github.io/logo.png",
-    "description": "Live Cricket TV HD Score developed by Microbuzz Tech provides Cricshow-style fast live line, cricket score updates, ball-by-ball commentary, match schedules, odds with history, sessions, fixtures, IPL, PSL, CPL, BPL, T20 World Cup and more.",
+    "description": "cricscore by Microbuzz Tech developed by Microbuzz Tech provides Cricshow-style fast live line, cricket score updates, ball-by-ball commentary, match schedules, odds with history, sessions, fixtures, IPL, PSL, CPL, BPL, T20 World Cup and more.",
     "sameAs": []
   }
   </script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #f5f5f5; }
+    header, footer { background: #0a1a44; color: #fff; text-align: center; padding: 14px; }
+    .tabs { display: flex; background: #fff; border-bottom: 1px solid #ddd; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { flex: 0 0 auto; min-width: 90px; text-align: center; padding: 10px 8px; cursor: pointer; color: #666; font-size: 13px; }
+    .tab i { display: block; font-size: 18px; margin-bottom: 4px; }
+    .tab.active { color: #0a1a44; border-bottom: 3px solid #0a1a44; font-weight: bold; }
+    #frameLayout { background: #fff; min-height: calc(100vh - 170px); padding: 16px; overflow: hidden; }
+    @media (min-width: 768px) { .tabs { justify-content: space-around; overflow-x: hidden; } .tab { flex: 1; min-width: unset; } }
+  </style>
 
   <style>
     body {
@@ -82,13 +94,6 @@
       color: #0e5322;
     }
 
-    .box {
-      background: white;
-      padding: 30px 20px;
-      border-radius: 12px;
-      border: 2px solid #7ee39f;
-      box-shadow: 0px 4px 18px rgba(0,0,0,0.1);
-    }
   </style>
 
 </head>
@@ -103,16 +108,18 @@
     </div>
   </section>
 
-  <div class="section">
-    <div class="box">
-      <h2>Website Under Construction</h2>
-      <p>We are preparing a premium cricket experience for you. Check back soon!</p>
-    </div>
-  </div>
+<div class="tabs">
+  <div class="tab" data-fragment="home"><i class="fa fa-house"></i>Home</div>
+  <div class="tab" data-fragment="live"><i class="fa fa-broadcast-tower"></i>Live</div>
+  <div class="tab" data-fragment="recent"><i class="fa fa-clock-rotate-left"></i>Recent</div>
+  <div class="tab" data-fragment="upcoming"><i class="fa fa-calendar"></i>Upcoming</div>
+  <div class="tab" data-fragment="livestreaming"><i class="fa fa-tv"></i>Streaming</div>
+</div>
 
-  <div id="footer"></div>
+<div id="frameLayout"></div>
 
-  <script>
+<div id="footer"></div>
+<script>
     async function load(file, element) {
       const html = await fetch(file).then(res => res.text());
       document.getElementById(element).innerHTML = html;
@@ -121,8 +128,65 @@
     load("header.html", "header");
     load("footer.html", "footer");
   </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3042232621588998"
-     crossorigin="anonymous"></script>
+<script type="module">
+  import { getLiveStreams } from "./api/livestreamingApi.js";
+  import { LiveStreamingAdapter } from "./adapters/livestreamingAdapter.js";
+
+  const frameLayout = document.getElementById('frameLayout');
+  const tabs = document.querySelectorAll('.tab');
+
+  // Fragment loader
+  async function loadFragment(name) {
+    try {
+      const res = await fetch(`fragments/${name}.html`);
+      frameLayout.innerHTML = await res.text();
+
+      // Run fragment-specific JS after HTML is injected
+      if (name === "livestreaming") {
+        loadLiveStreaming();
+      }
+
+    } catch (e) {
+      frameLayout.innerHTML = "<p>Fragment not found</p>";
+    }
+  }
+
+  function openFragment(name) {
+    tabs.forEach(t => t.classList.remove('active'));
+    document.querySelector(`.tab[data-fragment="${name}"]`)?.classList.add('active');
+
+    window.location.hash = name;
+    loadFragment(name);
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => openFragment(tab.dataset.fragment));
+  });
+
+  function handleHash() {
+    const fragment = window.location.hash.replace('#', '') || 'home';
+    openFragment(fragment);
+  }
+
+  window.addEventListener('hashchange', handleHash);
+  handleHash(); // initial load
+
+  // ====== LIVESTREAMING LOGIC ======
+  async function loadLiveStreaming() {
+    const recyclerView = document.getElementById("recyclerView");
+    if (!recyclerView) return;
+
+    recyclerView.innerHTML = "Loading...";
+
+    try {
+      const data = await getLiveStreams();
+      recyclerView.innerHTML = LiveStreamingAdapter(data);
+    } catch (err) {
+      console.error(err);
+      recyclerView.innerHTML = "Failed to load live streams";
+    }
+  }
+</script>
+
 </body>
 </html>
-

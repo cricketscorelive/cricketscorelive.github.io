@@ -1,57 +1,113 @@
+/* ===== RecyclerView (Grid container) ===== */
+#recyclerView {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile default */
+  gap: 12px;
+}
+
+/* ===== Card ===== */
 .card {
   background: #1f1f1f;
   border-radius: 10px;
   padding: 12px;
-  margin-bottom: 12px;
   color: white;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Hover only on devices that support hover */
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* ===== Title ===== */
 .title {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
+  text-align: center;
 }
 
+/* ===== Teams Row ===== */
 .teams {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 8px;
 }
 
+/* ===== Team ===== */
 .team {
   text-align: center;
   flex: 1;
 }
 
+/* ===== Team Logo ===== */
 .team img {
   width: 40px;
   height: 40px;
+  border-radius: 50%;
+  object-fit: contain;
 }
 
+/* ===== Team Name ===== */
 .team span {
   display: block;
   margin-top: 6px;
+  font-size: 13px;
 }
 
+/* ===== VS Text ===== */
 .vs {
   font-weight: bold;
+  font-size: 14px;
+  margin: 0 6px;
 }
 
+/* ===== Footer ===== */
 .footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 16px;
 }
 
+/* ===== Live Badge ===== */
 .live {
-  color: red;
+  color: #ff3b3b;
   font-weight: bold;
+  font-size: 13px;
 }
 
+/* ===== Watch Button ===== */
 .watch {
   background: #0a1a44;
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 13px;
+  white-space: nowrap;
+}
+
+/* ===== Tablet (2 cards) ===== */
+@media (min-width: 600px) {
+  #recyclerView {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== Small Desktop (3 cards) ===== */
+@media (min-width: 900px) {
+  #recyclerView {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ===== Large Desktop (5 cards) ===== */
+@media (min-width: 1200px) {
+  #recyclerView {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
