@@ -1,91 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cricket App</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cricscore | Fast Live Cricket Live Line, Ball-by-Ball Score, IPL, PSL | Microbuzz Tech</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.ico">
 
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- SEO META DESCRIPTION -->
+  <meta name="description"
+    content="Live Cricket TV & Score by Microbuzz Tech offers Cricshow-style fast live cricket scores, ball-by-ball updates, Hindi & English commentary, IPL, PSL, CPL, BPL, T20 World Cup, match schedules, odds history, fixtures, ranking, and complete live cricket coverage.">
+
+  <!-- SEO KEYWORDS -->
+  <meta name="keywords"
+    content="Live Cricket TV, Live Cricket Score, Cricket Live Line, Cricshow, Ball by Ball Score, Live Cricket Commentary, Hindi Commentary, English Commentary, IPL Live Score, PSL Live Score, BPL, CPL, T20 World Cup, ODI World Cup, ICC Test Championship, Cricket Odds, Cricket Sessions, Live Scorecard, Microbuzz Tech">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Canonical for Google -->
+  <link rel="canonical" href="https://cricketscorelive.github.io/">
+
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+
+  <!-- SEO Structured Data (Google Rich Results) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Microbuzz Tech",
+    "url": "https://cricketscorelive.github.io/",
+    "logo": "https://cricketscorelive.github.io/logo.png",
+    "description": "cricscore by Microbuzz Tech developed by Microbuzz Tech provides Cricshow-style fast live line, cricket score updates, ball-by-ball commentary, match schedules, odds with history, sessions, fixtures, IPL, PSL, CPL, BPL, T20 World Cup and more.",
+    "sameAs": []
+  }
+  </script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
 
   <style>
-    /* ====== GLOBAL ====== */
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-    }
-
-    header, footer {
-      background: #0a1a44;
-      color: #fff;
-      text-align: center;
-      padding: 14px;
-    }
-
-    /* ====== TAB LAYOUT (Like Android TabLayout) ====== */
-    .tabs {
-      display: flex;
-      background: #fff;
-      border-bottom: 1px solid #ddd;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-
+    body { margin: 0; font-family: Arial, sans-serif; background: #f5f5f5; }
+    header, footer { background: #0a1a44; color: #fff; text-align: center; padding: 14px; }
+    .tabs { display: flex; background: #fff; border-bottom: 1px solid #ddd; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .tabs::-webkit-scrollbar { display: none; }
-
-    .tab {
-      flex: 0 0 auto;
-      min-width: 90px;
-      text-align: center;
-      padding: 10px 8px;
-      cursor: pointer;
-      color: #666;
-      font-size: 13px;
-    }
-
-    .tab i {
-      display: block;
-      font-size: 18px;
-      margin-bottom: 4px;
-    }
-
-    .tab.active {
-      color: #0a1a44;
-      border-bottom: 3px solid #0a1a44;
-      font-weight: bold;
-    }
-
-    /* ====== FRAME LAYOUT (Like Android FrameLayout) ====== */
-    #frameLayout {
-      background: #fff;
-      min-height: calc(100vh - 170px);
-      padding: 16px;
-      overflow: hidden; /* FrameLayout should not scroll */
-    }
-
-    /* ====== DESKTOP MODE ====== */
-    @media (min-width: 768px) {
-      .tabs {
-        justify-content: space-around;
-        overflow-x: hidden;
-      }
-      .tab {
-        flex: 1;
-        min-width: unset;
-      }
-    }
+    .tab { flex: 0 0 auto; min-width: 90px; text-align: center; padding: 10px 8px; cursor: pointer; color: #666; font-size: 13px; }
+    .tab i { display: block; font-size: 18px; margin-bottom: 4px; }
+    .tab.active { color: #0a1a44; border-bottom: 3px solid #0a1a44; font-weight: bold; }
+    #frameLayout { background: #fff; min-height: calc(100vh - 170px); padding: 16px; overflow: hidden; }
+    @media (min-width: 768px) { .tabs { justify-content: space-around; overflow-x: hidden; } .tab { flex: 1; min-width: unset; } }
   </style>
 </head>
 <body>
 
-<!-- ====== HEADER ====== -->
-<header>
-  <h2>🏏 Cricket Hub</h2>
-</header>
+  <div id="header"></div>
 
-<!-- ====== TABLAYOUT ====== -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Live Cricket TV HD Score</h1>
+      <p class="hero-text">Watch Live Matches • Get Instant Scores • Stay Updated Anytime</p>
+    </div>
+  </section>
+
 <div class="tabs">
   <div class="tab" data-fragment="home"><i class="fa fa-house"></i>Home</div>
   <div class="tab" data-fragment="live"><i class="fa fa-broadcast-tower"></i>Live</div>
@@ -94,24 +67,38 @@
   <div class="tab" data-fragment="livestreaming"><i class="fa fa-tv"></i>Streaming</div>
 </div>
 
-<!-- ====== FRAME LAYOUT (ONLY THIS CHANGES) ====== -->
 <div id="frameLayout"></div>
 
-<!-- ====== FOOTER ====== -->
-<footer>© 2025 Cricket App</footer>
-
+<div id="footer"></div>
 <script>
-  /* ====== ANDROID-LIKE FRAGMENT MANAGER ====== */
+    async function load(file, element) {
+      const html = await fetch(file).then(res => res.text());
+      document.getElementById(element).innerHTML = html;
+    }
+
+    load("header.html", "header");
+    load("footer.html", "footer");
+  </script>
+<script type="module">
+  import { getLiveStreams } from "./api/livestreamingApi.js";
+  import { LiveStreamingAdapter } from "./adapters/livestreamingAdapter.js";
 
   const frameLayout = document.getElementById('frameLayout');
   const tabs = document.querySelectorAll('.tab');
 
+  // Fragment loader
   async function loadFragment(name) {
     try {
       const res = await fetch(`fragments/${name}.html`);
       frameLayout.innerHTML = await res.text();
+
+      // Run fragment-specific JS after HTML is injected
+      if (name === "livestreaming") {
+        loadLiveStreaming();
+      }
+
     } catch (e) {
-      frameLayout.innerHTML = '<p>Fragment not found</p>';
+      frameLayout.innerHTML = "<p>Fragment not found</p>";
     }
   }
 
@@ -119,18 +106,14 @@
     tabs.forEach(t => t.classList.remove('active'));
     document.querySelector(`.tab[data-fragment="${name}"]`)?.classList.add('active');
 
-    window.location.hash = name; // backstack support
+    window.location.hash = name;
     loadFragment(name);
   }
 
-  // Tab click listener
   tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      openFragment(tab.dataset.fragment);
-    });
+    tab.addEventListener('click', () => openFragment(tab.dataset.fragment));
   });
 
-  // Handle deep links like #livestreaming
   function handleHash() {
     const fragment = window.location.hash.replace('#', '') || 'home';
     openFragment(fragment);
@@ -138,6 +121,22 @@
 
   window.addEventListener('hashchange', handleHash);
   handleHash(); // initial load
+
+  // ====== LIVESTREAMING LOGIC ======
+  async function loadLiveStreaming() {
+    const recyclerView = document.getElementById("recyclerView");
+    if (!recyclerView) return;
+
+    recyclerView.innerHTML = "Loading...";
+
+    try {
+      const data = await getLiveStreams();
+      recyclerView.innerHTML = LiveStreamingAdapter(data);
+    } catch (err) {
+      console.error(err);
+      recyclerView.innerHTML = "Failed to load live streams";
+    }
+  }
 </script>
 
 </body>
