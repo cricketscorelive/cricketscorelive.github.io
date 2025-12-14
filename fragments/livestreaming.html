@@ -1,12 +1,12 @@
-<link rel="stylesheet" href="../styles/livestreaming.css">
+<!-- <link rel="stylesheet" href="styles/livestreaming.css">
 
 <h2>📺 Live Streaming</h2>
 
 <div id="recyclerView"></div>
 
 <script type="module">
-  import { getLiveStreams } from "../api/livestreamingApi.js";
-  import { LiveStreamingAdapter } from "../adapters/livestreamingAdapter.js";
+  import { getLiveStreams } from "api/livestreamingApi.js";
+  import { LiveStreamingAdapter } from "adapters/livestreamingAdapter.js";
 
   const recyclerView = document.getElementById("recyclerView");
 
@@ -17,4 +17,33 @@
   }
 
   loadData();
+</script>
+ -->
+
+<link rel="stylesheet" href="../styles/livestreaming.css">
+
+<h2>📺 Live Streaming</h2>
+<div id="recyclerView"></div>
+
+<script type="module">
+  import { getLiveStreams } from "../api/livestreamingApi.js";
+  import { LiveStreamingAdapter } from "../adapters/livestreamingAdapter.js";
+
+  async function loadData() {
+    const recyclerView = document.getElementById("recyclerView");
+    if (!recyclerView) return;
+
+    recyclerView.innerHTML = "Loading...";
+
+    try {
+      const data = await getLiveStreams();
+      recyclerView.innerHTML = LiveStreamingAdapter(data);
+    } catch (e) {
+      console.error(e);
+      recyclerView.innerHTML = "Failed to load";
+    }
+  }
+
+  // ✅ THIS LINE FIXES EVERYTHING
+  requestAnimationFrame(loadData);
 </script>
