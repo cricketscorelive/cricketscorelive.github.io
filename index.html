@@ -150,8 +150,9 @@
   import { RecentAdapter } from "./adapters/recentAdapter.js";
   import { LiveAdapter } from "./adapters/liveAdapter.js";
   import { getArticles } from "./api/articlesApi.js";
+  import { getNews } from "./api/articlesApi.js";
   import { HomeArticleAdapter } from "./adapters/homeArticleAdapter.js";
-
+  import { NewsSliderAdapter } from "./adapters/newsAdapter.js";
 
   const frameLayout = document.getElementById("frameLayout");
   const tabs = document.querySelectorAll(".tab");
@@ -254,14 +255,37 @@
 
   async function loadHome() {
     const rv = document.getElementById("recyclerView");
-    if (!rv) return;
+    const slider = document.getElementById("newsSlider");
+    if (!rv || !slider) return;
 
-    rv.innerHTML = "Loading...";
-
+    // Load NEWS slider
+    slider.innerHTML = "Loading news...";
     try {
-      const data = await getArticles();
-      console.log("Articles:", await getArticles());
-      rv.innerHTML = HomeArticleAdapter(data);
+      const newsList = await getNews();
+      if (newsList && newsList.length > 0) {
+        slider.innerHTML = NewsSliderAdapter(newsList);
+
+        // Auto-scroll slider like ViewPager2
+        let scrollPos = 0;
+        setInterval(() => {
+          if (!slider) return;
+          scrollPos += slider.offsetWidth * 0.9 + 12; // width + gap
+          if (scrollPos >= slider.scrollWidth) scrollPos = 0;
+          slider.scrollTo({ left: scrollPos, behavior: "smooth" });
+        }, 5000);
+      } else {
+        slider.innerHTML = "No news available";
+      }
+    } catch (e) {
+      console.error("News error:", e);
+      slider.innerHTML = "Failed to load news";
+    }
+
+    // Load ARTICLES below
+    rv.innerHTML = "Loading...";
+    try {
+      const articlesList = await getArticles();
+      rv.innerHTML = HomeArticleAdapter(articlesList);
     } catch (e) {
       console.error("Articles error:", e);
       rv.innerHTML = "Failed to load articles";

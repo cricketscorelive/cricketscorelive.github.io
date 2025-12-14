@@ -5,3 +5,9 @@ export async function getArticles() {
   if (!res.ok) throw new Error("Network error");
   return await res.json();
 }
+
+export async function getNews() {
+  const res = await fetch(API_URLS.NEWS);
+  if (!res.ok) throw new Error("Network error");
+  return await res.json();
+}

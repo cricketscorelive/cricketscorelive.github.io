@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Article Details | Microbuzz Tech</title>
+  <title>New/Articles Details | Microbuzz Tech</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.ico">
   <link rel="stylesheet" href="css/articles.css">
   <style>
     body {
@@ -98,11 +99,13 @@
     } else {
       const article = bundle.ARTICLE;
 
+      const authorLink = article.authorlink || article.authorLink || "#";
+
       container.innerHTML = `
         <img class="article-banner" src="${article.banner}" alt="Article Banner">
         <div class="article-title">${article.title}</div>
         <div class="article-meta">
-          By <a href="${article.authorLink}" target="_blank">${article.author}</a> | ${article.time}
+          By <a href="${authorLink}" target="_blank">${article.author}</a> | ${article.time}
         </div>
         <div class="article-description">${article.description}</div>
       `;
