@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cricket App</title>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ====== GLOBAL ====== */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    header, footer {
+      background: #0a1a44;
+      color: #fff;
+      text-align: center;
+      padding: 14px;
+    }
+
+    /* ====== TAB LAYOUT (Like Android TabLayout) ====== */
+    .tabs {
+      display: flex;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      flex: 0 0 auto;
+      min-width: 90px;
+      text-align: center;
+      padding: 10px 8px;
+      cursor: pointer;
+      color: #666;
+      font-size: 13px;
+    }
+
+    .tab i {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .tab.active {
+      color: #0a1a44;
+      border-bottom: 3px solid #0a1a44;
+      font-weight: bold;
+    }
+
+    /* ====== FRAME LAYOUT (Like Android FrameLayout) ====== */
+    #frameLayout {
+      background: #fff;
+      min-height: calc(100vh - 170px);
+      padding: 16px;
+      overflow: hidden; /* FrameLayout should not scroll */
+    }
+
+    /* ====== DESKTOP MODE ====== */
+    @media (min-width: 768px) {
+      .tabs {
+        justify-content: space-around;
+        overflow-x: hidden;
+      }
+      .tab {
+        flex: 1;
+        min-width: unset;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ====== HEADER ====== -->
+<header>
+  <h2>🏏 Cricket Hub</h2>
+</header>
+
+<!-- ====== TABLAYOUT ====== -->
+<div class="tabs">
+  <div class="tab" data-fragment="home"><i class="fa fa-house"></i>Home</div>
+  <div class="tab" data-fragment="live"><i class="fa fa-broadcast-tower"></i>Live</div>
+  <div class="tab" data-fragment="recent"><i class="fa fa-clock-rotate-left"></i>Recent</div>
+  <div class="tab" data-fragment="upcoming"><i class="fa fa-calendar"></i>Upcoming</div>
+  <div class="tab" data-fragment="livestreaming"><i class="fa fa-tv"></i>Streaming</div>
+</div>
+
+<!-- ====== FRAME LAYOUT (ONLY THIS CHANGES) ====== -->
+<div id="frameLayout"></div>
+
+<!-- ====== FOOTER ====== -->
+<footer>© 2025 Cricket App</footer>
+
+<script>
+  /* ====== ANDROID-LIKE FRAGMENT MANAGER ====== */
+
+  const frameLayout = document.getElementById('frameLayout');
+  const tabs = document.querySelectorAll('.tab');
+
+  async function loadFragment(name) {
+    try {
+      const res = await fetch(`fragments/${name}.html`);
+      frameLayout.innerHTML = await res.text();
+    } catch (e) {
+      frameLayout.innerHTML = '<p>Fragment not found</p>';
+    }
+  }
+
+  function openFragment(name) {
+    tabs.forEach(t => t.classList.remove('active'));
+    document.querySelector(`.tab[data-fragment="${name}"]`)?.classList.add('active');
+
+    window.location.hash = name; // backstack support
+    loadFragment(name);
+  }
+
+  // Tab click listener
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      openFragment(tab.dataset.fragment);
+    });
+  });
+
+  // Handle deep links like #livestreaming
+  function handleHash() {
+    const fragment = window.location.hash.replace('#', '') || 'home';
+    openFragment(fragment);
+  }
+
+  window.addEventListener('hashchange', handleHash);
+  handleHash(); // initial load
+</script>
+
+</body>
+</html>
